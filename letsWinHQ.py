@@ -18,11 +18,10 @@ def main():
     last_time = time.time()
     while True:
         question_screen = np.array(ImageGrab.grab(bbox=(65, 172, 290, 400)))
-        # question_screen = cv2.cvtColor(question_screen, cv2.COLOR_BGR2GRAY)
-        mask = (question_screen == [230, 230, 230]).all(axis=2)
-        question_screen[mask] = [255, 255, 255]
-        new_mask = (question_screen >= [160, 160, 160]).all(axis=2)
-        question_screen[new_mask] = [0, 0, 0]
+        question_screen[np.where((question_screen <= [200, 200, 200]).all(axis=2))] = [0, 0, 0]
+        question_screen[np.where((question_screen >= [230, 230, 230]).all(axis=2))] = [0, 0, 0]
+        question_screen = cv2.cvtColor(question_screen, cv2.COLOR_BGR2GRAY)
+
 
         cv2.imshow('HQ', cv2.cvtColor(question_screen, cv2.COLOR_BGR2RGB))
         cv2.imwrite('output.png', question_screen)
