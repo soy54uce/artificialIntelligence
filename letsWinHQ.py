@@ -10,11 +10,11 @@ def screen_record():
     while(True):
         time.sleep(0.1)
         # 800x600 windowed mode
-        question_screen =  np.array(ImageGrab.grab(bbox=(65,172,290,400)))
+        question_screen = ImageGrab.grab(bbox=(65, 172, 290, 400))
 
         print('loop took {} seconds'.format(time.time()-last_time))
         last_time = time.time()
-        cv2.imshow('HQ',cv2.cvtColor(question_screen, cv2.COLOR_BGR2RGB))
+        cv2.imshow('HQ', cv2.cvtColor(question_screen, cv2.COLOR_BGR2RGB))
         # read_question(question_screen)
         if cv2.waitKey(25) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
@@ -25,12 +25,7 @@ def screen_record():
 
 def read_question(image):
     original_image = image
-    img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    img = img.filter(ImageFilter.MedianFilter())
-    enhancer = ImageEnhance.Contrast(img)
-    img = enhancer.enhance(2)
-    img = img.convert(1)
-    cv2.imshow('HQGRay', cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    img = original_image[np.where((original_image == [166, 163, 189]).all(axis=2))] = [0, 0, 0]
     image_text = pytesseract.image_to_string(img)
     print(image_text)
 
