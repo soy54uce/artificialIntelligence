@@ -1,29 +1,10 @@
 import numpy as np
 from PIL import ImageGrab, Image
 import cv2
-import time
 import pytesseract
 
 
 def read_question_and_answers():
-    img = Image.open(image)
-    image_text = pytesseract.image_to_string(img)
-    image_text.replace("\n\n", "\n")
-    text = image_text.split('\n')
-    print(image_text)
-    time.sleep(5)
-
-
-def find_answer(question, a1, a2, a3):
-    return
-
-
-def main():
-    img_path = 'output.png'
-    pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"
-
-    last_time = time.time()
-
     question_screen = np.array(ImageGrab.grab(bbox=(30, 320, 472, 460)))
     a1 = np.array(ImageGrab.grab(bbox=(30, 470, 472, 550)))
     a2 = np.array(ImageGrab.grab(bbox=(30, 559, 472, 639)))
@@ -33,18 +14,36 @@ def main():
     a2[np.where((a2 <= [220, 220, 220]).all(axis=2))] = [0, 0, 0]
     a3[np.where((a3 <= [220, 220, 220]).all(axis=2))] = [0, 0, 0]
 
-    cv2.imshow('Question', cv2.cvtColor(question_screen, cv2.COLOR_BGR2RGB))
-    cv2.imshow('A1', cv2.cvtColor(a1, cv2.COLOR_BGR2RGB))
-    cv2.imshow('A2', cv2.cvtColor(a2, cv2.COLOR_BGR2RGB))
-    cv2.imshow('A3', cv2.cvtColor(a3, cv2.COLOR_BGR2RGB))
-    cv2.imwrite('output.png', question_screen)
+    cv2.imwrite('question.png', question_screen)
+    cv2.imwrite('ans1.png', a1)
+    cv2.imwrite('ans2.png', a2)
+    cv2.imwrite('ans3.png', a3)
 
-    while True:
-        if cv2.waitKey(25) & 0xFF == ord('q'):
-            cv2.destroyAllWindows()
-            break
-        elif cv2.waitKey(82) & 0xFF == ord('r'):
-            read_question_and_answers()
+    quest_img = Image.open('question.png')
+    ans1_img = Image.open('ans1.png')
+    ans2_img = Image.open('ans2.png')
+    ans3_img = Image.open('ans3.png')
+    question = pytesseract.image_to_string(quest_img)
+    ans_1 = pytesseract.image_to_string(ans1_img)
+    ans_2 = pytesseract.image_to_string(ans2_img)
+    ans_3 = pytesseract.image_to_string(ans3_img)
+    answer = find_answer(question, ans_1, ans_2, ans_3)
+    print(question, '\n', ans_1, '\n', ans_2, '\n', ans_3)
+    print(answer)
+
+
+def find_answer(question, a1, a2, a3):
+    ans = 42
+
+    return ans
+
+
+def main():
+    pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"
+    loop_var = 'go'
+    while loop_var != 'stop':
+        read_question_and_answers()
+        loop_var = input("Ready?")
 
 
 main()
