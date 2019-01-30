@@ -5,15 +5,16 @@ import pytesseract
 
 
 def read_question_and_answers():
-    question_screen = np.array(ImageGrab.grab(bbox=(30, 320, 472, 460)))
-    a1 = np.array(ImageGrab.grab(bbox=(30, 470, 472, 550)))
-    a2 = np.array(ImageGrab.grab(bbox=(30, 559, 472, 639)))
-    a3 = np.array(ImageGrab.grab(bbox=(30, 648, 472, 728)))
+    question_screen = np.array(ImageGrab.grab(bbox=(100, 275, 530, 460)))
+    a1 = np.array(ImageGrab.grab(bbox=(130, 520, 450, 580)))
+    a2 = np.array(ImageGrab.grab(bbox=(130, 600, 450, 660)))
+    a3 = np.array(ImageGrab.grab(bbox=(130, 680, 450, 740)))
     question_screen[np.where((question_screen <= [220, 220, 220]).all(axis=2))] = [0, 0, 0]
     a1[np.where((a1 <= [220, 220, 220]).all(axis=2))] = [0, 0, 0]
     a2[np.where((a2 <= [220, 220, 220]).all(axis=2))] = [0, 0, 0]
     a3[np.where((a3 <= [220, 220, 220]).all(axis=2))] = [0, 0, 0]
 
+    cv2.imshow('Q', cv2.cvtColor(question_screen, cv2.COLOR_BGR2RGB))
     cv2.imwrite('question.png', question_screen)
     cv2.imwrite('ans1.png', a1)
     cv2.imwrite('ans2.png', a2)
