@@ -14,16 +14,15 @@ def read_question_and_answers():
     a2[np.where((a2 <= [220, 220, 220]).all(axis=2))] = [0, 0, 0]
     a3[np.where((a3 <= [220, 220, 220]).all(axis=2))] = [0, 0, 0]
 
-    cv2.imshow('Q', cv2.cvtColor(question_screen, cv2.COLOR_BGR2RGB))
-    cv2.imwrite('question.png', question_screen)
-    cv2.imwrite('ans1.png', a1)
-    cv2.imwrite('ans2.png', a2)
-    cv2.imwrite('ans3.png', a3)
+    cv2.imwrite('hqGame/question.png', question_screen)
+    cv2.imwrite('hqGame/ans1.png', a1)
+    cv2.imwrite('hqGame/ans2.png', a2)
+    cv2.imwrite('hqGame/ans3.png', a3)
 
-    quest_img = Image.open('question.png')
-    ans1_img = Image.open('ans1.png')
-    ans2_img = Image.open('ans2.png')
-    ans3_img = Image.open('ans3.png')
+    quest_img = Image.open('hqGame/question.png')
+    ans1_img = Image.open('hqGame/ans1.png')
+    ans2_img = Image.open('hqGame/ans2.png')
+    ans3_img = Image.open('hqGame/ans3.png')
     question = pytesseract.image_to_string(quest_img)
     ans_1 = pytesseract.image_to_string(ans1_img)
     ans_2 = pytesseract.image_to_string(ans2_img)
@@ -43,8 +42,8 @@ def main():
     pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"
     loop_var = 'go'
     while loop_var != 'stop':
-        read_question_and_answers()
         loop_var = input("Ready?")
+        read_question_and_answers()
 
 
 main()
